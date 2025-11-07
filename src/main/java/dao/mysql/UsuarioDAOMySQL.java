@@ -1,5 +1,7 @@
 package dao.mysql;
 
-public class UsuarioDAOMySQL {
+import dao.interfaces.UsuarioDAO;
+
+public class UsuarioDAOMySQL implements UsuarioDAO {
 
 }
