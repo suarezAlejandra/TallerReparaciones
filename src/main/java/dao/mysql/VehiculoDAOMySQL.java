@@ -1,11 +1,40 @@
 package dao.mysql;
 
+import java.util.ArrayList;
+
 import dao.interfaces.VehiculoDAO;
+import entidades.Vehiculo;
 
 public class VehiculoDAOMySQL implements VehiculoDAO {
-	int insert(Vehiculo v);
-	int update(Vehiculo v);
-	int delete(Vehiculo v);
-	ArrayList<Vehiculo> findall();
-	Cliente findByMatricula(String matricula);
+
+	@Override
+	public int insert(Vehiculo v) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int update(Vehiculo v) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int delete(Vehiculo v) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Vehiculo findByMatricula(String matricula) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<Vehiculo> findall() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

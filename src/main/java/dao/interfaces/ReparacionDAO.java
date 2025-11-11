@@ -1,5 +1,12 @@
 package dao.interfaces;
 
-public interface ReparacionDAO {
+import java.util.ArrayList;
+import entidades.Reparacion;
 
+public interface ReparacionDAO {
+	int insert(Reparacion r);
+	int update(Reparacion r);
+	int delete(Reparacion r);
+	Reparacion findById(int id);
+	ArrayList<Reparacion> findall();
 }
