@@ -4,7 +4,11 @@ import dao.interfaces.UsuarioDAO;
 import entidades.Usuario;
 
 public class UsuarioDAOMySQL implements UsuarioDAO {
-
+	private Connection conexion;
+	
+	public UsuarioDAOMySQL() {
+		
+	}
 	@Override
 	public boolean login(String dni, String password) {
 		// TODO Auto-generated method stub
@@ -30,7 +34,7 @@ public class UsuarioDAOMySQL implements UsuarioDAO {
 	}
 
 	@Override
-	public Usuario finByNombreUsuario(String nombre_usuario) {
+	public Usuario findByNombreUsuario(String nombre_usuario) {
 		// TODO Auto-generated method stub
 		return null;
 	}
