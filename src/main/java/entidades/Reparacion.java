@@ -8,11 +8,11 @@ public class Reparacion {
 	private static int id = 0;
 	private String descripcion;
 	private LocalDate fecha_entrada;
-	private double coste_estimado;
+	private float coste_estimado;
 	private String estado;
 	
 	// Constructor
-	public Reparacion(String descripcion, LocalDate fecha_entrada, double coste_estimado, String estado) {
+	public Reparacion(String descripcion, LocalDate fecha_entrada, float coste_estimado, String estado) {
 		// ID
 		this.id_reparacion = id++;
 		// Resto de atributos
@@ -47,7 +47,7 @@ public class Reparacion {
 		return coste_estimado;
 	}
 
-	public void setCoste_estimado(double coste_estimado) {
+	public void setCoste_estimado(float coste_estimado) {
 		this.coste_estimado = coste_estimado;
 	}
 

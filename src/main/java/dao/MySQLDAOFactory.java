@@ -8,25 +8,22 @@ import dao.mysql.VehiculoDAOMySQL;
 public class MySQLDAOFactory implements DAOFactory {
 	@Override
 	public ClienteDAOMySQL getClienteDAO() {
-		return new ClienteDAOMySQL;
+		return new ClienteDAOMySQL();
 	}
 
 	@Override
 	public ReparacionDAOMySQL getReparacionDAO() {
-		// TODO Auto-generated method stub
-		return null;
+		return new ReparacionDAOMySQL();
 	}
 
 	@Override
 	public UsuarioDAOMySQL getUsuarioDAO() {
-		// TODO Auto-generated method stub
-		return null;
+		return new UsuarioDAOMySQL();
 	}
 
 	@Override
 	public VehiculoDAOMySQL getVehiculoDAO() {
-		// TODO Auto-generated method stub
-		return null;
+		return new VehiculoDAOMySQL();
 	}
 
 }
