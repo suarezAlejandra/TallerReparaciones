@@ -2,11 +2,13 @@ package dao.mysql;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import dao.DBConnection;
 import dao.interfaces.VehiculoDAO;
+import entidades.Cliente;
 import entidades.Vehiculo;
 
 public class VehiculoDAOMySQL implements VehiculoDAO {
@@ -42,25 +44,87 @@ private Connection conexion;
 	@Override
 	public int update(Vehiculo v) {
 		// TODO Auto-generated method stub
-		return 0;
+		int resul = 0;
+		try {
+			String sql = "UPDATE vehiculo SET marca = ?, modelo = ? WHERE matricula = ?;";
+			PreparedStatement pst = conexion.prepareStatement(sql);
+			
+			pst.setString(3, v.getMarca());
+			pst.setString(4, v.getModelo());
+			
+			resul = pst.executeUpdate();
+			System.out.println("> Resultado de la actualización: " + resul);
+		} catch (SQLException e) {
+			System.out.println("> NOK: " + e.getMessage());
+		}
+		return resul;
 	}
 
 	@Override
 	public int delete(Vehiculo v) {
 		// TODO Auto-generated method stub
-		return 0;
+		int resul = 0;
+		try {
+			String sql = "DELETE FROM vehiculo WHERE matricula = ?;";
+			PreparedStatement pst = conexion.prepareStatement(sql);
+			
+			pst.setString(1, v.getMatricula());
+			
+			resul = pst.executeUpdate();
+			System.out.println("> Resultado del borrado: " + resul);
+		} catch (SQLException e) {
+			System.out.println("> NOK: " + e.getMessage());
+		}
+		return resul;
 	}
 
 	@Override
 	public Vehiculo findByMatricula(String matricula) {
 		// TODO Auto-generated method stub
-		return null;
+		Vehiculo v = null;
+		try {
+			String sql = "SELECT * FROM vehiculo WHERE matricula = ?;";
+			PreparedStatement pst = conexion.prepareStatement(sql);
+			
+			pst.setString(1, matricula);
+			
+			ResultSet resul = pst.executeQuery();
+			
+			if (resul.next()) {
+				v = new Vehiculo(
+						resul.getString("matricula"),
+						resul.getString("marca"),
+						resul.getString("modelo")
+						);
+			}
+		} catch (SQLException e) {
+			System.out.println(">NOK: " + e.getMessage());
+		}
+		return v;
 	}
 
 	@Override
 	public ArrayList<Vehiculo> findall() {
 		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Vehiculo> vehiculos = new ArrayList<>();
+		try {
+			String sql = "SELECT * FROM vehiuclo ORDER BY id_vehiculo;";
+			PreparedStatement pst = conexion.prepareStatement(sql);
+			
+			ResultSet resul = pst.executeQuery();
+			
+			while (resul.next()) {
+				Vehiculo v = new Vehiculo(
+						resul.getString("matricula"),
+						resul.getString("marca"),
+						resul.getString("modelo")
+						);
+				vehiculos.add(v);
+			}
+		} catch (SQLException e) {
+			System.out.println("> NOK: " + e.getMessage());
+		}
+		return vehiculos;
 	}
 
 }

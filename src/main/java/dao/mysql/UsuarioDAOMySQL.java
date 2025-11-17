@@ -2,10 +2,12 @@ package dao.mysql;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import dao.DBConnection;
 import dao.interfaces.UsuarioDAO;
+import entidades.Cliente;
 import entidades.Usuario;
 
 public class UsuarioDAOMySQL implements UsuarioDAO {
@@ -48,18 +50,64 @@ public class UsuarioDAOMySQL implements UsuarioDAO {
 	@Override
 	public int update(Usuario u) {
 		// TODO Auto-generated method stub
-		return 0;
+		int resul = 0;
+		try {
+			String sql = "UPDATE usuario SET nombre_usuario = ?, password = ?, rol = ? WHERE dni = ?;";
+			PreparedStatement pst = conexion.prepareStatement(sql);
+			
+			pst.setString(3, u.getNombre_usuario());
+			pst.setString(4, u.getPassword());
+			pst.setString(5, u.getRol());
+			
+			resul = pst.executeUpdate();
+			System.out.println("> Resultado de la actualización: " + resul);
+		} catch (SQLException e) {
+			System.out.println("> NOK: " + e.getMessage());
+		}
+		return resul;
 	}
 
 	@Override
 	public int delete(Usuario u) {
 		// TODO Auto-generated method stub
-		return 0;
+		int resul = 0;
+		try {
+			String sql = "DELETE FROM usuario WHERE dni = ?;";
+			PreparedStatement pst = conexion.prepareStatement(sql);
+			
+			pst.setString(1, u.getDni());
+			
+			resul = pst.executeUpdate();
+			System.out.println("> Resultado del borrado: " + resul);
+		} catch (SQLException e) {
+			System.out.println("> NOK: " + e.getMessage());
+		}
+		return resul;
 	}
 
 	@Override
 	public Usuario findByNombreUsuario(String nombre_usuario) {
 		// TODO Auto-generated method stub
-		return null;
+		Usuario u = null;
+		try {
+			String sql = "SELECT * FROM usuario WHERE nombre_usuario = ?;";
+			PreparedStatement pst = conexion.prepareStatement(sql);
+			
+			pst.setString(1, nombre_usuario);
+			
+			ResultSet resul = pst.executeQuery();
+			
+			if (resul.next()) {
+				u = new Usuario(
+						resul.getString("dni"),
+						resul.getString("nombre_usuario"),
+						resul.getString("password"),
+						resul.getString("rol")
+						);
+			}
+		} catch (SQLException e) {
+			System.out.println(">NOK: " + e.getMessage());
+		}
+		return u;
 	}
 }

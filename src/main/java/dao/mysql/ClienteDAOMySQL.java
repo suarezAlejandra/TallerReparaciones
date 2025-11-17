@@ -2,6 +2,7 @@ package dao.mysql;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -44,33 +45,89 @@ public class ClienteDAOMySQL implements ClienteDAO {
 	@Override
 	public int update(Cliente c) {
 		// TODO Auto-generated method stub
-		return 0;
+		int resul = 0;
+		try {
+			String sql = "UPDATE cliente SET nombre = ?, telefono = ?, email = ? WHERE dni = ?;";
+			PreparedStatement pst = conexion.prepareStatement(sql);
+			
+			pst.setString(3, c.getNombre());
+			pst.setString(4, c.getTelefono());
+			pst.setString(5,  c.getEmail());
+			
+			resul = pst.executeUpdate();
+			System.out.println("> Resultado de la actualización: " + resul);
+		} catch (SQLException e) {
+			System.out.println("> NOK: " + e.getMessage());
+		}
+		return resul;
 	}
 
 	@Override
 	public int delete(Cliente c) {
 		// TODO Auto-generated method stub
-		String sqlDelete = "DELETE FROM cliente WHERE dni = ?;";
+		int resul = 0;
 		try {
-			PreparedStatement pst = conexion.prepareStatement(sqlDelete);
+			String sql = "DELETE FROM cliente WHERE dni = ?;";
+			PreparedStatement pst = conexion.prepareStatement(sql);
 			
-			// Borrar cliente
 			pst.setString(1, c.getDni());
+			
+			resul = pst.executeUpdate();
+			System.out.println("> Resultado del borrado: " + resul);
 		} catch (SQLException e) {
-			System.out.println("> NOK: Cliente con DNI " + c.getDni() + " no se encuentra en la base de datos.");
+			System.out.println("> NOK: " + e.getMessage());
 		}
-		return 0;
+		return resul;
 	}
 
 	@Override
 	public Cliente findByDni(String dni) {
 		// TODO Auto-generated method stub
-		return null;
+		Cliente c = null;
+		try {
+			String sql = "SELECT * FROM cliente WHERE dni = ?;";
+			PreparedStatement pst = conexion.prepareStatement(sql);
+			
+			pst.setString(1, dni);
+			
+			ResultSet resul = pst.executeQuery();
+			
+			if (resul.next()) {
+				c = new Cliente(
+						resul.getString("dni"),
+						resul.getString("nombre"),
+						resul.getString("telefono"),
+						resul.getString("email")
+						);
+			}
+		} catch (SQLException e) {
+			System.out.println(">NOK: " + e.getMessage());
+		}
+		return c;
 	}
 
 	@Override
 	public ArrayList<Cliente> findall() {
 		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Cliente> clientes = new ArrayList<>();
+		try {
+			String sql = "SELECT * FROM cliente ORDER BY id_cliente;";
+			PreparedStatement pst = conexion.prepareStatement(sql);
+			
+			ResultSet resul = pst.executeQuery();
+			
+			while (resul.next()) {
+				Cliente c = new Cliente(
+						resul.getString("dni"),
+						resul.getString("nombre"),
+						resul.getString("telefono"),
+						resul.getString("email")
+						);
+				clientes.add(c);
+			}
+		} catch (SQLException e) {
+			System.out.println("> NOK: " + e.getMessage());
+		}
+		return clientes;
 	}
 }
