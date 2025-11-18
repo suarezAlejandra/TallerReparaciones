@@ -8,9 +8,9 @@ public class Reparacion {
 	private static int id = 0;
 	private String descripcion;
 	private LocalDate fecha_entrada;
-	private float coste_estimado;
+	private double coste_estimado;
 	private String estado;
-	
+	 
 	// Constructor
 	public Reparacion(String descripcion, LocalDate fecha_entrada, float coste_estimado, String estado) {
 		// ID
@@ -62,7 +62,7 @@ public class Reparacion {
 	// toString
 	@Override
 	public String toString() {
-		return "ID: " + id_reparacion + ", descripción: " + descripcion + ", fecha entrada: " +
+		return "REPARACIÓN ID: " + id_reparacion + ", descripción: " + descripcion + ", fecha entrada: " +
 				fecha_entrada + ", coste estimado: " + coste_estimado + ", estado: " + estado;
 	}
 }

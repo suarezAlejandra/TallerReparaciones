@@ -4,11 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import dao.DBConnection;
 import dao.interfaces.ReparacionDAO;
-import entidades.Cliente;
 import entidades.Reparacion;
 
 public class ReparacionDAOMySQL implements ReparacionDAO {
@@ -30,8 +30,8 @@ public class ReparacionDAOMySQL implements ReparacionDAO {
 			
 			// Introducir datos
 			pst.setString(1, r.getDescripcion());
-			pst.setDate(2, r.getFecha_entrada());
-			pst.setFloat(3, r.getCoste_estimado());
+			pst.setDate(2, java.sql.Date.valueOf(r.getFecha_entrada()));
+			pst.setDouble(3, r.getCoste_estimado());
 			pst.setString(4, r.getEstado());
 			
 			resul = pst.executeUpdate();
@@ -47,16 +47,19 @@ public class ReparacionDAOMySQL implements ReparacionDAO {
 		// TODO Auto-generated method stub
 		int resul = 0;
 		try {
+			// PreparedStatement
 			String sql = "UPDATE reparacion SET descripcion = ?, fecha_entrada = ?, coste_estimado = ?, estado = ? WHERE id_reparacion = ?;";
 			PreparedStatement pst = conexion.prepareStatement(sql);
 			
+			// Introducir datos
 			pst.setString(1, r.getDescripcion());
-			pst.setDate(2, r.getFecha_entrada());
-			pst.setFloat(3, r.getCoste_estimado());
-			pst.setString(4,  r.getEstado());
+			pst.setDate(2, java.sql.Date.valueOf(r.getFecha_entrada()));
+			pst.setDouble(3, r.getCoste_estimado());
+			pst.setString(4, r.getEstado());
+			pst.setInt(5,  r.getId_reparacion());
 			
 			resul = pst.executeUpdate();
-			System.out.println("> Resultado de la actualización: " + resul);
+			System.out.println("> Resultado de la inserción: " + resul);
 		} catch (SQLException e) {
 			System.out.println("> NOK: " + e.getMessage());
 		}
@@ -71,12 +74,17 @@ public class ReparacionDAOMySQL implements ReparacionDAO {
 			String sql = "DELETE FROM reparacion WHERE id_reparacion = ?;";
 			PreparedStatement pst = conexion.prepareStatement(sql);
 			
-			//pst.setInt(1, c.getId_reparacion());
+			pst.setInt(1, r.getId_reparacion());
 			
 			resul = pst.executeUpdate();
-			System.out.println("> Resultado del borrado: " + resul);
+			
+			if (resul == 1) {
+				System.out.println("> OK: Reparación con ID " + r.getId_reparacion() + " eliminada correctamente.");
+			} else {
+				System.out.println("> NOK: Reparación con ID " + r.getId_reparacion() + " no se encuentra en la base de datos");
+			}
 		} catch (SQLException e) {
-			System.out.println("> NOK: " + e.getMessage());
+			e.printStackTrace();
 		}
 		return resul;
 	}
@@ -96,7 +104,7 @@ public class ReparacionDAOMySQL implements ReparacionDAO {
 			if (resul.next()) {
 				r = new Reparacion(
 						resul.getString("descripcion"),
-						resul.getDate("fecha_entrada"),
+						resul.getDate("fecha_entrada").toLocalDate(),
 						resul.getFloat("coste_estimado"),
 						resul.getString("estado")
 						);
@@ -112,7 +120,7 @@ public class ReparacionDAOMySQL implements ReparacionDAO {
 		// TODO Auto-generated method stub
 		ArrayList<Reparacion> reparaciones = new ArrayList<>();
 		try {
-			String sql = "SELECT * FROM reparacion ORDER BY id_reparacion;";
+			String sql = "SELECT * FROM reparacion;";
 			PreparedStatement pst = conexion.prepareStatement(sql);
 			
 			ResultSet resul = pst.executeQuery();
@@ -120,7 +128,7 @@ public class ReparacionDAOMySQL implements ReparacionDAO {
 			while (resul.next()) {
 				Reparacion r = new Reparacion(
 						resul.getString("descripcion"),
-						resul.getDate("fecha_entrada"),
+						resul.getDate("fecha_entrada").toLocalDate(),
 						resul.getFloat("coste_estimado"),
 						resul.getString("estado")
 						);

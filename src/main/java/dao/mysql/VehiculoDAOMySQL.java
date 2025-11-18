@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import dao.DBConnection;
 import dao.interfaces.VehiculoDAO;
-import entidades.Cliente;
 import entidades.Vehiculo;
 
 public class VehiculoDAOMySQL implements VehiculoDAO {
@@ -46,14 +45,17 @@ private Connection conexion;
 		// TODO Auto-generated method stub
 		int resul = 0;
 		try {
+			// PreparedStatement
 			String sql = "UPDATE vehiculo SET marca = ?, modelo = ? WHERE matricula = ?;";
 			PreparedStatement pst = conexion.prepareStatement(sql);
 			
-			pst.setString(3, v.getMarca());
-			pst.setString(4, v.getModelo());
+			// Introducir datos
+			pst.setString(1, v.getMarca());
+			pst.setString(2, v.getModelo());
+			pst.setString(3, v.getMatricula());
 			
 			resul = pst.executeUpdate();
-			System.out.println("> Resultado de la actualización: " + resul);
+			System.out.println("> Resultado de la inserción: " + resul);
 		} catch (SQLException e) {
 			System.out.println("> NOK: " + e.getMessage());
 		}
@@ -71,9 +73,14 @@ private Connection conexion;
 			pst.setString(1, v.getMatricula());
 			
 			resul = pst.executeUpdate();
-			System.out.println("> Resultado del borrado: " + resul);
+			
+			if (resul == 1) {
+				System.out.println("> OK: Vehículo con matrícula " + v.getMatricula() + " eliminado correctamente.");
+			} else {
+				System.out.println("> NOK: Vehículo con matrícula " + v.getMatricula() + " no se encuentra en la base de datos");
+			}
 		} catch (SQLException e) {
-			System.out.println("> NOK: " + e.getMessage());
+			e.printStackTrace();
 		}
 		return resul;
 	}

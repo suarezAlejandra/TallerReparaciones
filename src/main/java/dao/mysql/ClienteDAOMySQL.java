@@ -44,18 +44,20 @@ public class ClienteDAOMySQL implements ClienteDAO {
 
 	@Override
 	public int update(Cliente c) {
-		// TODO Auto-generated method stub
 		int resul = 0;
 		try {
+			// PreparedStatement
 			String sql = "UPDATE cliente SET nombre = ?, telefono = ?, email = ? WHERE dni = ?;";
 			PreparedStatement pst = conexion.prepareStatement(sql);
 			
-			pst.setString(3, c.getNombre());
-			pst.setString(4, c.getTelefono());
-			pst.setString(5,  c.getEmail());
+			// Introducir datos
+			pst.setString(1, c.getNombre());
+			pst.setString(2, c.getTelefono());
+			pst.setString(3, c.getEmail());
+			pst.setString(4, c.getDni());
 			
 			resul = pst.executeUpdate();
-			System.out.println("> Resultado de la actualización: " + resul);
+			System.out.println("> Resultado de la inserción: " + resul);
 		} catch (SQLException e) {
 			System.out.println("> NOK: " + e.getMessage());
 		}
@@ -73,9 +75,14 @@ public class ClienteDAOMySQL implements ClienteDAO {
 			pst.setString(1, c.getDni());
 			
 			resul = pst.executeUpdate();
-			System.out.println("> Resultado del borrado: " + resul);
+			
+			if (resul == 1) {
+				System.out.println("> OK: Persona con DNI " + c.getDni() + " eliminada correctamente.");
+			} else {
+				System.out.println("> NOK: Persona con DNI " + c.getDni() + " no se encuentra en la base de datos");
+			}
 		} catch (SQLException e) {
-			System.out.println("> NOK: " + e.getMessage());
+			e.printStackTrace();
 		}
 		return resul;
 	}

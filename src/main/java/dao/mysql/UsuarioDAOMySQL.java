@@ -7,7 +7,6 @@ import java.sql.SQLException;
 
 import dao.DBConnection;
 import dao.interfaces.UsuarioDAO;
-import entidades.Cliente;
 import entidades.Usuario;
 
 public class UsuarioDAOMySQL implements UsuarioDAO {
@@ -21,7 +20,27 @@ public class UsuarioDAOMySQL implements UsuarioDAO {
 	@Override
 	public boolean login(String dni, String password) {
 		// TODO Auto-generated method stub
-		return false;
+		boolean usuarioRegistrado = false;
+
+		try {
+			String sql = "SELECT nombre_usuario, password, rol FROM usuario WHERE dni = ?;";
+			PreparedStatement pst = conexion.prepareStatement(sql);
+			
+			pst.setString(1, dni);
+			
+			try (ResultSet resul = pst.executeQuery()) {
+				if (resul.next()) {
+					// Rellenar usuario con datos del SELECT
+					String passHash = resul.getString("password");
+					
+					// Comprobar contraseña recibida
+					usuarioRegistrado = PasswordUtils.verifyPassword(password, passHash);
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("> NOK: " + e.getMessage());
+		}
+		return usuarioRegistrado;
 	}
 
 	@Override
@@ -52,15 +71,18 @@ public class UsuarioDAOMySQL implements UsuarioDAO {
 		// TODO Auto-generated method stub
 		int resul = 0;
 		try {
+			// PreparedStatement
 			String sql = "UPDATE usuario SET nombre_usuario = ?, password = ?, rol = ? WHERE dni = ?;";
 			PreparedStatement pst = conexion.prepareStatement(sql);
 			
-			pst.setString(3, u.getNombre_usuario());
-			pst.setString(4, u.getPassword());
-			pst.setString(5, u.getRol());
+			// Introducir datos
+			pst.setString(1, u.getNombre_usuario());
+			pst.setString(2, u.getPassword());
+			pst.setString(3, u.getRol());
+			pst.setString(4, u.getDni());
 			
 			resul = pst.executeUpdate();
-			System.out.println("> Resultado de la actualización: " + resul);
+			System.out.println("> Resultado de la inserción: " + resul);
 		} catch (SQLException e) {
 			System.out.println("> NOK: " + e.getMessage());
 		}
@@ -78,9 +100,14 @@ public class UsuarioDAOMySQL implements UsuarioDAO {
 			pst.setString(1, u.getDni());
 			
 			resul = pst.executeUpdate();
-			System.out.println("> Resultado del borrado: " + resul);
+			
+			if (resul == 1) {
+				System.out.println("> OK: Usuario con DNI " + u.getDni() + " eliminado correctamente.");
+			} else {
+				System.out.println("> NOK: Usuario con DNI " + u.getDni() + " no se encuentra en la base de datos");
+			}
 		} catch (SQLException e) {
-			System.out.println("> NOK: " + e.getMessage());
+			e.printStackTrace();
 		}
 		return resul;
 	}

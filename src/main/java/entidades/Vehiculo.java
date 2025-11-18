@@ -46,6 +46,6 @@ public class Vehiculo {
 	// toString
 	@Override
 	public String toString() {
-		return "ID: " + id_vehiculo + ", matrícula: " + matricula + ", marca: " + marca + ", modelo: " + modelo;
+		return "VEHICULO ID: " + id_vehiculo + ", matrícula: " + matricula + ", marca: " + marca + ", modelo: " + modelo;
 	}
 }
