@@ -7,16 +7,9 @@ import dao.interfaces.ClienteDAO;
 
 class ClienteDAOMySQLTest {
 	
-	// Crear Clientes
-	Cliente c1 = new Cliente("58429549G", "Alejandra", "610778385", "alejandrasf@gmail.com");
-	Cliente c2 = new Cliente("12123434D", "David", "620501626", "davideg@gmail.com");
-	Cliente c3 = new Cliente("10030497A", "Alejandro", "625326509", "asgranda@gmail.com");
-	Cliente c4 = new Cliente("10023451M", "María José", "636684983", "mjose@gmail.com");
-	Cliente c5 = new Cliente("12345678Z", "Zoe", "666666666", "zoe@gmail.com");
-	
-
 	@Test
 	void testInsert() {	
+		Cliente c1 = new Cliente("58429549G", "Alejandra", "610778385", "alejandrasf@gmail.com");
 		int resul = 0;
 				
 		// Crear clienteDAO
@@ -31,6 +24,7 @@ class ClienteDAOMySQLTest {
 
 	@Test
 	void testUpdate() {
+		Cliente c2 = new Cliente("12123434D", "David", "620501626", "davideg@gmail.com");
 		int resul = 0;
 				
 		// Crear clienteDAO
@@ -50,7 +44,8 @@ class ClienteDAOMySQLTest {
 	}
 
 	@Test
-	void testDelete() {						
+	void testDelete() {		
+		Cliente c3 = new Cliente("10030497A", "Alejandro", "625326509", "asgranda@gmail.com");
 		int resul = 0;
 								
 		// Crear clienteDAO
@@ -68,11 +63,37 @@ class ClienteDAOMySQLTest {
 
 	@Test
 	void testFindByDni() {
+		Cliente c1 = new Cliente("58429549G", "Alejandra", "610778385", "alejandrasf@gmail.com");
+		Cliente c2 = new Cliente("12123434D", "David", "620501626", "davideg@gmail.com");
+		Cliente c3 = new Cliente("10030497A", "Alejandro", "625326509", "asgranda@gmail.com");
+		Cliente c4 = new Cliente("10023451M", "María José", "636684983", "mjose@gmail.com");
+		Cliente c5 = new Cliente("12345678Z", "Zoe", "666666666", "zoe@gmail.com");
+		
+		Cliente c = null;
+		
+		// Crear ClienteDAO
+		ClienteDAO cDAO = new ClienteDAOMySQL();
+		
+		// Insertar clientes
+		cDAO.insert(c1);
+		cDAO.insert(c2);
+		cDAO.insert(c3);
+		cDAO.insert(c4);
+		cDAO.insert(c5);
+		
+		cDAO.findByDni("58429549G");
+		
+		// Comprobar
+		assertEquals(c1, c);
 	}
 
 	@Test
 	void testFindall() {
-		fail("Not yet implemented");
+		Cliente c1 = new Cliente("58429549G", "Alejandra", "610778385", "alejandrasf@gmail.com");
+		Cliente c2 = new Cliente("12123434D", "David", "620501626", "davideg@gmail.com");
+		Cliente c3 = new Cliente("10030497A", "Alejandro", "625326509", "asgranda@gmail.com");
+		Cliente c4 = new Cliente("10023451M", "María José", "636684983", "mjose@gmail.com");
+		Cliente c5 = new Cliente("12345678Z", "Zoe", "666666666", "zoe@gmail.com");
 	}
 
 }

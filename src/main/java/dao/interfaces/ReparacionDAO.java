@@ -1,5 +1,6 @@
 package dao.interfaces;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import entidades.Reparacion;
 
@@ -9,4 +10,8 @@ public interface ReparacionDAO {
 	int delete(Reparacion r);
 	Reparacion findById(int id);
 	ArrayList<Reparacion> findall();
+	
+	ArrayList<Reparacion> findByFechaEntrada(LocalDate fecha);
+	ArrayList<Reparacion> findByEstado(String estado);
+	ArrayList<Reparacion> findByCosteMedio(double coste);
 }

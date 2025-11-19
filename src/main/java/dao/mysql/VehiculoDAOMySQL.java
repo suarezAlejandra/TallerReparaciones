@@ -12,7 +12,7 @@ import entidades.Vehiculo;
 
 public class VehiculoDAOMySQL implements VehiculoDAO {
 
-private Connection conexion;
+	private Connection conexion;
 	
 	public VehiculoDAOMySQL() {
 		conexion = DBConnection.getInstance().getConnection();

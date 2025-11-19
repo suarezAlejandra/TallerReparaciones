@@ -97,7 +97,7 @@ public class ReparacionDAOMySQL implements ReparacionDAO {
 			String sql = "SELECT * FROM reparacion WHERE id_reparacion = ?;";
 			PreparedStatement pst = conexion.prepareStatement(sql);
 			
-			//pst.setString(1, id_reparacion);
+			pst.setInt(1, id);
 			
 			ResultSet resul = pst.executeQuery();
 			
@@ -138,6 +138,83 @@ public class ReparacionDAOMySQL implements ReparacionDAO {
 			System.out.println("> NOK: " + e.getMessage());
 		}
 		return reparaciones;
+	}
+
+	@Override
+	public ArrayList<Reparacion> findByFechaEntrada(LocalDate fecha) {
+		// TODO Auto-generated method stub
+		ArrayList<Reparacion> reparacionesPorFecha = new ArrayList<>();
+		try {
+			String sql = "SELECT * FROM reparacion ORDER BY fecha_entrada;";
+			PreparedStatement pst = conexion.prepareStatement(sql);
+			
+			ResultSet resul = pst.executeQuery();
+			
+			if (resul.next()) {
+				Reparacion r = new Reparacion(
+						resul.getString("descripcion"),
+						resul.getDate("fecha_entrada").toLocalDate(),
+						resul.getFloat("coste_estimado"),
+						resul.getString("estado")
+						);
+				reparacionesPorFecha.add(r);
+			}
+		} catch (SQLException e) {
+			System.out.println(">NOK: " + e.getMessage());
+		}
+		return reparacionesPorFecha;
+	}
+
+	@Override
+	public ArrayList<Reparacion> findByEstado(String estado) {
+		// TODO Auto-generated method stub
+		ArrayList<Reparacion> reparacionesPorEstado = new ArrayList<>();
+		try {
+			String sql = "SELECT * FROM reparacion WHERE estado = ?;";
+			PreparedStatement pst = conexion.prepareStatement(sql);
+			
+			pst.setString(1,  estado);
+			
+			ResultSet resul = pst.executeQuery();
+			
+			if (resul.next()) {
+				Reparacion r = new Reparacion(
+						resul.getString("descripcion"),
+						resul.getDate("fecha_entrada").toLocalDate(),
+						resul.getFloat("coste_estimado"),
+						resul.getString("estado")
+						);
+				reparacionesPorEstado.add(r);
+			}
+		} catch (SQLException e) {
+			System.out.println(">NOK: " + e.getMessage());
+		}
+		return reparacionesPorEstado;
+	}
+
+	@Override
+	public ArrayList<Reparacion> findByCosteMedio(double coste) {
+		// TODO Auto-generated method stub
+		ArrayList<Reparacion> reparacionesPorCoste = new ArrayList<>();
+		try {
+			String sql = "SELECT * FROM reparacion ORDER BY coste_estimado;";
+			PreparedStatement pst = conexion.prepareStatement(sql);
+						
+			ResultSet resul = pst.executeQuery();
+			
+			if (resul.next()) {
+				Reparacion r = new Reparacion(
+						resul.getString("descripcion"),
+						resul.getDate("fecha_entrada").toLocalDate(),
+						resul.getFloat("coste_estimado"),
+						resul.getString("estado")
+						);
+				reparacionesPorCoste.add(r);
+			}
+		} catch (SQLException e) {
+			System.out.println(">NOK: " + e.getMessage());
+		}
+		return reparacionesPorCoste;
 	}
 
 }
