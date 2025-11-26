@@ -77,7 +77,7 @@ public class UsuarioDAOMySQL implements UsuarioDAO {
 			
 			// Introducir datos
 			pst.setString(1, u.getNombre_usuario());
-			pst.setString(2, u.getPassword());
+			pst.setString(2, PasswordUtils.hashPassword(u.getPassword()));
 			pst.setString(3, u.getRol());
 			pst.setString(4, u.getDni());
 			

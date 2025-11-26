@@ -115,7 +115,7 @@ public class VehiculoDAOMySQL implements VehiculoDAO {
 		// TODO Auto-generated method stub
 		ArrayList<Vehiculo> vehiculos = new ArrayList<>();
 		try {
-			String sql = "SELECT * FROM vehiuclo ORDER BY id_vehiculo;";
+			String sql = "SELECT * FROM vehiculo ORDER BY id_vehiculo;";
 			PreparedStatement pst = conexion.prepareStatement(sql);
 			
 			ResultSet resul = pst.executeQuery();
